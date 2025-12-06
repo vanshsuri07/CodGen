@@ -1,6 +1,9 @@
 "use client"
 import React, { useState } from 'react'
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Send } from 'lucide-react'
+import { SlideUp } from './ui/SlideUp'
+import { FadeIn } from './ui/FadeIn'
+import { motion } from 'framer-motion'
 
 const ContactAndFooter = () => {
   const [formData, setFormData] = useState({
@@ -10,13 +13,13 @@ const ContactAndFooter = () => {
     message: ''
   })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('Form submitted:', formData)
     // Add your form submission logic here
   }
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -30,18 +33,18 @@ const ContactAndFooter = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             {/* Section Header */}
-            <div className="text-center mb-16">
+            <SlideUp className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                 Get In Touch
               </h2>
               <p className="text-xl text-gray-600">
                 Have questions? We&apos;d love to hear from you. Send us a message!
               </p>
-            </div>
+            </SlideUp>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Contact Form */}
-              <div className="bg-white rounded-2xl p-8 shadow-lg">
+              <FadeIn delay={0.2} className="bg-white rounded-2xl p-8 shadow-lg">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">
                   Send us a Message
                 </h3>
@@ -56,7 +59,7 @@ const ContactAndFooter = () => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="John Doe"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                   </div>
 
@@ -70,7 +73,7 @@ const ContactAndFooter = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="john@example.com"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                   </div>
 
@@ -84,7 +87,7 @@ const ContactAndFooter = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+1 (555) 000-0000"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                   </div>
 
@@ -98,22 +101,24 @@ const ContactAndFooter = () => {
                       onChange={handleChange}
                       rows={4}
                       placeholder="Tell us how we can help you..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all"
                     ></textarea>
                   </div>
 
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={handleSubmit}
                     className="w-full px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg flex items-center justify-center gap-2"
                   >
                     <Send className="w-5 h-5" />
                     Send Message
-                  </button>
+                  </motion.button>
                 </div>
-              </div>
+              </FadeIn>
 
               {/* Contact Info */}
-              <div className="space-y-8">
+              <SlideUp delay={0.4} className="space-y-8">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-6">
                     Contact Information
@@ -165,21 +170,20 @@ const ContactAndFooter = () => {
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
                   <h4 className="font-semibold text-gray-900 mb-4">Follow Us</h4>
                   <div className="flex space-x-4">
-                    <a href="#" className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
-                      <Facebook className="w-5 h-5" />
-                    </a>
-                    <a href="#" className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
-                      <Twitter className="w-5 h-5" />
-                    </a>
-                    <a href="#" className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
-                      <Linkedin className="w-5 h-5" />
-                    </a>
-                    <a href="#" className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
-                      <Instagram className="w-5 h-5" />
-                    </a>
+                    {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
+                      <motion.a
+                        key={i}
+                        href="#"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
+                      >
+                        <Icon className="w-5 h-5" />
+                      </motion.a>
+                    ))}
                   </div>
                 </div>
-              </div>
+              </SlideUp>
             </div>
           </div>
         </div>
@@ -196,18 +200,16 @@ const ContactAndFooter = () => {
                 Empowering the next generation of developers through hands-on learning and real-world projects.
               </p>
               <div className="flex space-x-3">
-                <a href="#" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
-                  <Facebook className="w-4 h-4" />
-                </a>
-                <a href="#" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
-                  <Twitter className="w-4 h-4" />
-                </a>
-                <a href="#" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
-                  <Linkedin className="w-4 h-4" />
-                </a>
-                <a href="#" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
-                  <Instagram className="w-4 h-4" />
-                </a>
+                {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
+                  <motion.a
+                    key={i}
+                    href="#"
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors"
+                  >
+                    <Icon className="w-4 h-4" />
+                  </motion.a>
+                ))}
               </div>
             </div>
 
