@@ -3,16 +3,33 @@ import HeroSection from '@/components/HeroSection'
 import Service from '@/components/Service'
 import About from '@/components/About'
 import Contact from '@/components/Contact'
+import Domain from '@/components/Domain'
 
 const page = () => {
   return (
-    <main>
+    <main className="scroll-smooth">
       <Navbar />
       <HeroSection />
-      <Service />
-      <About />
-      <Contact />
       
+      {/* Services Section */}
+      <div id="services" className="scroll-mt-20">
+        <Service />
+      </div>
+      
+      {/* Domain Section */}
+      <div className="py-8">
+        <Domain />
+      </div>
+      
+      {/* About Section */}
+      <div id="about" className="scroll-mt-20">
+        <About />
+      </div>
+      
+      {/* Contact Section */}
+      <div id="contact" className="scroll-mt-20">
+        <Contact />
+      </div>
     </main>
   )
 }
