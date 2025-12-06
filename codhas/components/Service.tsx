@@ -47,7 +47,7 @@ const Service = () => {
 
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50" id="services">
+    <section className="py-10 bg-linear-to-b from-white to-gray-50" id="services">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
@@ -79,7 +79,7 @@ const Service = () => {
                   {service.title}
                 </h3>
 
-                <p className="text-gray-600 mb-6 leading-relaxed flex-grow">
+                <p className="text-gray-600 mb-6 leading-relaxed grow">
                   {service.description}
                 </p>
 

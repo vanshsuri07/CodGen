@@ -69,12 +69,12 @@ const Navbar = () => {
         >
           <motion.div
             whileHover={{ scale: 1.1, rotate: 6 }}
-            className="relative w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/30 transition-all duration-300"
+            className="relative w-10 h-10 bg-linear-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/30 transition-all duration-300"
           >
             <span className="relative z-10">C</span>
             <div className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </motion.div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent tracking-tight group-hover:scale-105 transition-transform">
+          <span className="text-2xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent tracking-tight group-hover:scale-105 transition-transform">
             CodHas
           </span>
         </Link>
@@ -110,7 +110,7 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => scrollToSection("#contact", "contact")}
-            className="ml-4 px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300"
+            className="ml-4 px-6 py-2.5 rounded-full bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300"
           >
             Get Started
           </motion.button>
@@ -196,7 +196,7 @@ const Navbar = () => {
               >
                 <button
                   onClick={() => scrollToSection("#contact", "contact")}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg active:scale-95 transition-transform"
+                  className="w-full py-3 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg active:scale-95 transition-transform"
                 >
                   Get Started
                 </button>

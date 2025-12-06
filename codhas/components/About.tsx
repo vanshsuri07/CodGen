@@ -55,14 +55,14 @@ const About = () => {
           </FadeIn>
 
           {/* Features */}
-          <SlideUp delay={0.4} className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8">
+          <SlideUp delay={0.4} className="bg-linear-to-br from-blue-50 to-indigo-50 rounded-2xl p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
               What We Offer
             </h3>
             <div className="space-y-4">
               {features.map((feature, i) => (
                 <div key={i} className="flex items-start space-x-3">
-                  <CheckCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="w-6 h-6 text-blue-600 shrink-0 mt-0.5" />
                   <span className="text-gray-700">{feature}</span>
                 </div>
               ))}

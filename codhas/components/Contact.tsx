@@ -1,10 +1,10 @@
 "use client"
 import React, { useState } from 'react'
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Send } from 'lucide-react'
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Send} from 'lucide-react'
 import { SlideUp } from './ui/SlideUp'
 import { FadeIn } from './ui/FadeIn'
 import { motion } from 'framer-motion'
-
+import Link from 'next/link'
 const ContactAndFooter = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -263,9 +263,9 @@ const ContactAndFooter = () => {
                 © 2024 CodHas. All rights reserved.
               </p>
               <div className="flex space-x-6 text-sm">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
+                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
+                <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">Terms of Service</Link>
+                <Link href="/policy" className="text-gray-400 hover:text-white transition-colors">Refund Policy</Link>
               </div>
             </div>
           </div>
