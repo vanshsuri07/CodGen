@@ -26,7 +26,7 @@ export default function TermsAndConditions() {
       <div className="container max-w-4xl mx-auto px-4 py-16 space-y-10">
 
         <TermsBlock title="Program Nature">
-          CodHas provides task-based virtual internships. Certificates are issued only after work submission & review.
+          codgen provides task-based virtual internships. Certificates are issued only after work submission & review.
         </TermsBlock>
 
         <TermsBlock title="Submission Rules">
@@ -51,7 +51,7 @@ export default function TermsAndConditions() {
         </TermsBlock>
 
         <TermsBlock title="Liability">
-          CodHas does not guarantee jobs/placements. Certificate represents completion—not employment assurance.
+          codgen does not guarantee jobs/placements. Certificate represents completion—not employment assurance.
         </TermsBlock>
 
         <div className="bg-yellow-50 p-6 rounded border border-yellow-400 flex gap-3">

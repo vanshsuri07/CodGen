@@ -168,10 +168,10 @@ const Domain = () => {
       </div>
 
       {/* Hover CTA */}
-      <div className="flex items-center text-sm font-semibold text-gray-700 opacity-0 
+      {/* <div className="flex items-center text-sm font-semibold text-gray-700 opacity-0 
       group-hover:opacity-100 transition-all">
         Explore →
-      </div>
+      </div> */}
     </div>
   </div>
 ))}
@@ -188,3 +188,4 @@ const Domain = () => {
 }
 
 export default Domain
+

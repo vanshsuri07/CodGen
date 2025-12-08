@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Swirly Canalope';
+  src: url('/fonts/swirly-canalope_poster02.png') format('png');
+       
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #fffefe;
   --foreground: #000000;

@@ -82,14 +82,14 @@ export default function PrivacyPolicy() {
 
           <Section icon={<FileText size={20}/>} title="Policy Updates">
             <Item title="Changes in Future">
-              As CodHas grows, policy may update. Latest date above will indicate updates.
+              As codgen grows, policy may update. Latest date above will indicate updates.
             </Item>
           </Section>
 
           {/* CONTACT */}
           <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded">
             Contact support:<br/>
-            📩 Email: support@codhas.in<br/>
+            📩 Email: support@codgen.in<br/>
             📱 WhatsApp: +91 XXXXXXXXXX
           </div>
 

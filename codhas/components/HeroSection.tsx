@@ -5,7 +5,7 @@ import { SlideUp } from "./ui/SlideUp";
 
 const HeroSection = () => {
   return (
-    <section id="home" className="relative w-full min-h-[90vh] overflow-hidden">
+    <section id="home" className="relative w-full min-h-[90vh] overflow-hidden pt-20">
       
       {/* Background Video */}
       <video

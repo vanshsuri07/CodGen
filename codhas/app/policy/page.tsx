@@ -33,7 +33,7 @@ export default function RefundPolicy() {
       <div className="container max-w-4xl mx-auto px-4 py-16 space-y-10">
 
         <div className="bg-red-50 border-l-4 border-red-600 p-6 rounded text-gray-800">
-          The following terms apply when you make a payment to CodHas for
+          The following terms apply when you make a payment to CodGen for
           internship certification, report generation or related services.
           Using our platform means you agree to this policy.
         </div>
@@ -91,7 +91,7 @@ export default function RefundPolicy() {
 {/* 
         <div className="bg-gray-100 p-6 rounded border">
           <p className="font-semibold text-gray-800 mb-2">For refund-related queries:</p>
-          📩 Email: support@codhas.in<br/>
+          📩 Email: support@codgen.in<br/>
           📱 WhatsApp: +91 XXXXXXXXXX
         </div> */}
 

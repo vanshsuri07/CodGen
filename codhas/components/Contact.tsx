@@ -136,8 +136,8 @@ const ContactAndFooter = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
-                      <p className="text-gray-600">info@codhas.com</p>
-                      <p className="text-gray-600">support@codhas.com</p>
+                      <p className="text-gray-600">info@codgen.com</p>
+                      <p className="text-gray-600">support@codgen.com</p>
                     </div>
                   </div>
 
@@ -195,7 +195,7 @@ const ContactAndFooter = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             {/* Company Info */}
             <div>
-              <h3 className="text-2xl font-bold mb-4">CodHas</h3>
+              <h3 className="text-2xl font-bold mb-4">codgen</h3>
               <p className="text-gray-400 mb-4">
                 Empowering the next generation of developers through hands-on learning and real-world projects.
               </p>
@@ -260,7 +260,7 @@ const ContactAndFooter = () => {
           <div className="border-t border-gray-800 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <p className="text-gray-400 text-sm">
-                © 2024 CodHas. All rights reserved.
+                © 2024 codgen. All rights reserved.
               </p>
               <div className="flex space-x-6 text-sm">
                 <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
