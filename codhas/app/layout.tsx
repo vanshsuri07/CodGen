@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -24,9 +23,9 @@ const poppins = Poppins({
 
 
 
-export const metadata: Metadata = {
-  title: "CodGen",
-  description: "Internship Project - CodGen",
+export const metadata = {
+  title: "CodGen • Project-Based Virtual Internships",
+  description: "Learn by building real projects. Gain experience and get certified.",
   icons: {
     icon: '/favicon.ico',
     // apple: '/apple-icon.png',

@@ -51,11 +51,22 @@ const Navbar = () => {
   ];
 
   const scrollToSection = (href: string, id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
     setIsOpen(false);
+    
+    // Small delay to allow menu to close before scrolling
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        const offset = 80; // Account for fixed navbar height
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }, 100);
   };
 
   return (
@@ -81,7 +92,7 @@ const Navbar = () => {
             CodGen
           </span>
         </button>
-``
+
         {/* --- Desktop Navigation --- */}
         <div className="hidden md:flex items-center gap-3">
           <ul className="flex items-center gap-1 bg-gray-50/80 backdrop-blur-sm rounded-full px-2 py-2 shadow-sm border border-gray-200/50">
@@ -166,7 +177,7 @@ const Navbar = () => {
                     onClick={() => scrollToSection(link.href, link.id)}
                     className={`w-full text-left px-5 py-3.5 rounded-xl font-medium transition-all duration-200 ${
                       activeSection === link.id
-                        ? "bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20"
+                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20"
                         : "text-gray-700 hover:bg-gray-50 active:scale-[0.98] border border-transparent hover:border-gray-200"
                     }`}
                   >

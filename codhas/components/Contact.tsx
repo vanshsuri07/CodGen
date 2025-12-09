@@ -29,7 +29,7 @@ const ContactAndFooter = () => {
   return (
     <>
       {/* Contact Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50" id="contact">
+      <section className="py-20 bg-linear-to-br from-blue-50 to-indigo-50" id="contact">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             {/* Section Header */}
@@ -131,7 +131,7 @@ const ContactAndFooter = () => {
                 <div className="space-y-6">
                   {/* Email */}
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <div className="shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                       <Mail className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
@@ -143,7 +143,7 @@ const ContactAndFooter = () => {
 
                   {/* Phone */}
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <div className="shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                       <Phone className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
@@ -155,7 +155,7 @@ const ContactAndFooter = () => {
 
                   {/* Address */}
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <div className="shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                       <MapPin className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
@@ -195,7 +195,7 @@ const ContactAndFooter = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             {/* Company Info */}
             <div>
-              <h3 className="text-2xl font-bold mb-4">codgen</h3>
+              <h3 className="text-2xl font-bold mb-4">CodGen</h3>
               <p className="text-gray-400 mb-4">
                 Empowering the next generation of developers through hands-on learning and real-world projects.
               </p>
