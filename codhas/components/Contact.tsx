@@ -1,33 +1,148 @@
 "use client"
 import React, { useState } from 'react'
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Send} from 'lucide-react'
-import { SlideUp } from './ui/SlideUp'
-import { FadeIn } from './ui/FadeIn'
-import { motion } from 'framer-motion'
-import Link from 'next/link'
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Send, CheckCircle, X, AlertCircle, Loader2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+
+// Toast Component
+type ToastType = 'success' | 'error';
+
+interface ToastProps {
+  message: string;
+  type: ToastType;
+  onClose: () => void;
+}
+
+const Toast = ({ message, type, onClose }: ToastProps) => {
+  const icons: Record<ToastType, React.ReactNode> = {
+    success: <CheckCircle className="w-5 h-5" />,
+    error: <AlertCircle className="w-5 h-5" />,
+  };
+
+  const colors: Record<ToastType, string> = {
+    success: 'bg-green-500',
+    error: 'bg-red-500',
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -50, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -20, scale: 0.9 }}
+      className={`fixed top-4 right-4 z-50 ${colors[type]} text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 min-w-[300px] max-w-md`}
+    >
+      {icons[type]}
+      <p className="flex-1 font-medium">{message}</p>
+      <button onClick={onClose} className="hover:bg-white/20 rounded p-1 transition-colors">
+        <X className="w-4 h-4" />
+      </button>
+    </motion.div>
+  );
+};
+
+// Animation Components
+interface AnimationProps {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}
+
+const SlideUp = ({ children, delay = 0, className = "" }: AnimationProps) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+const FadeIn = ({ children, delay = 0, className = "" }: AnimationProps) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const ContactAndFooter = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     message: ''
-  })
+  });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Form submitted:', formData)
-    // Add your form submission logic here
-  }
+  const showToast = (message: string, type: ToastType) => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 5000);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const form = new FormData();
+    form.append("access_key", "805b81cc-02d3-4a90-99a2-4dd9f48f4dc3");
+    form.append("name", formData.name);
+    form.append("email", formData.email);
+    form.append("phone", formData.phone);
+    form.append("message", formData.message);
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: form
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        showToast("Message sent successfully! We'll get back to you soon.", "success");
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        showToast("Failed to send message. Please try again.", "error");
+      }
+    } catch (error) {
+      showToast("Something went wrong. Please try again later.", "error");
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
   return (
     <>
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Contact Section */}
       <section className="py-20 bg-linear-to-br from-blue-50 to-indigo-50" id="contact">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,69 +165,75 @@ const ContactAndFooter = () => {
                 </h3>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
+                    <label className="block text-gray-700 font-medium mb-2">Full Name</label>
+                    <input 
+                      type="text" 
+                      name="name" 
+                      value={formData.name} 
                       onChange={handleChange}
                       placeholder="John Doe"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
+                    <label className="block text-gray-700 font-medium mb-2">Email Address</label>
+                    <input 
+                      type="email" 
+                      name="email" 
+                      value={formData.email} 
                       onChange={handleChange}
                       placeholder="john@example.com"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
+                    <label className="block text-gray-700 font-medium mb-2">Phone Number</label>
+                    <input 
+                      type="tel" 
+                      name="phone" 
+                      value={formData.phone} 
                       onChange={handleChange}
-                      placeholder="+1 (555) 000-0000"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      placeholder="+1 (555) 000-0000" 
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2">
-                      Message
-                    </label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
+                    <label className="block text-gray-700 font-medium mb-2">Message</label>
+                    <textarea 
+                      name="message" 
+                      value={formData.message} 
                       onChange={handleChange}
                       rows={4}
                       placeholder="Tell us how we can help you..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all"
-                    ></textarea>
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    />
                   </div>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                  <motion.button 
                     onClick={handleSubmit}
-                    className="w-full px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg flex items-center justify-center gap-2"
+                    whileHover={{ scale: isSubmitting ? 1 : 1.02 }} 
+                    whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                    disabled={isSubmitting}
+                    className="w-full px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg flex items-center justify-center gap-2 disabled:bg-blue-400 disabled:cursor-not-allowed"
                   >
-                    <Send className="w-5 h-5" />
-                    Send Message
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        Send Message
+                      </>
+                    )}
                   </motion.button>
                 </div>
               </FadeIn>
@@ -137,7 +258,6 @@ const ContactAndFooter = () => {
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
                       <p className="text-gray-600">info@codgen.com</p>
-                      <p className="text-gray-600">support@codgen.com</p>
                     </div>
                   </div>
 
@@ -167,7 +287,7 @@ const ContactAndFooter = () => {
                 </div>
 
                 {/* Social Links */}
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
+                {/* <div className="bg-white rounded-2xl p-6 shadow-lg">
                   <h4 className="font-semibold text-gray-900 mb-4">Follow Us</h4>
                   <div className="flex space-x-4">
                     {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
@@ -182,7 +302,7 @@ const ContactAndFooter = () => {
                       </motion.a>
                     ))}
                   </div>
-                </div>
+                </div> */}
               </SlideUp>
             </div>
           </div>
@@ -199,7 +319,7 @@ const ContactAndFooter = () => {
               <p className="text-gray-400 mb-4">
                 Empowering the next generation of developers through hands-on learning and real-world projects.
               </p>
-              <div className="flex space-x-3">
+              {/* <div className="flex space-x-3">
                 {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
                   <motion.a
                     key={i}
@@ -210,7 +330,7 @@ const ContactAndFooter = () => {
                     <Icon className="w-4 h-4" />
                   </motion.a>
                 ))}
-              </div>
+              </div> */}
             </div>
 
             {/* Quick Links */}
@@ -229,11 +349,11 @@ const ContactAndFooter = () => {
             <div>
               <h4 className="font-semibold text-lg mb-4">Programs</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Web Development</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Mobile Development</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Data Science</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">UI/UX Design</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">DevOps</a></li>
+                <li className="text-gray-400 hover:text-white transition-colors">Web Development</li>
+                <li className="text-gray-400 hover:text-white transition-colors">Mobile Development</li>
+                <li className="text-gray-400 hover:text-white transition-colors">Data Science</li>
+                <li className="text-gray-400 hover:text-white transition-colors">UI/UX Design</li>
+                <li className="text-gray-400 hover:text-white transition-colors">DevOps</li>
               </ul>
             </div>
 
@@ -263,16 +383,16 @@ const ContactAndFooter = () => {
                 © 2024 codgen. All rights reserved.
               </p>
               <div className="flex space-x-6 text-sm">
-                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
-                <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">Terms of Service</Link>
-                <Link href="/policy" className="text-gray-400 hover:text-white transition-colors">Refund Policy</Link>
+                <a href="/privacy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                <a href="/terms" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                <a href="/policy" className="text-gray-400 hover:text-white transition-colors">Refund Policy</a>
               </div>
             </div>
           </div>
         </div>
       </footer>
     </>
-  )
-}
+  );
+};
 
 export default ContactAndFooter;

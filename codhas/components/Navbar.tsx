@@ -15,7 +15,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
-  // Handle scroll effect for the navbar
+  
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);

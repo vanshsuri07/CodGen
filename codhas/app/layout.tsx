@@ -24,7 +24,7 @@ const poppins = Poppins({
 
 
 export const metadata = {
-  title: "CodGen • Project-Based Virtual Internships",
+  title: "CodGen",
   description: "Learn by building real projects. Gain experience and get certified.",
   icons: {
     icon: '/favicon.ico',

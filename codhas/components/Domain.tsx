@@ -8,16 +8,14 @@ const Domain = () => {
   const [isPaused, setIsPaused] = useState(false)
 
   const domains = [
-    {
-      icon: <Code className="w-10 h-10" />,
-      title: "Web Development",
-      description: "Build modern, responsive websites",
-      gradient: "from-blue-500 via-blue-600 to-cyan-500",
-      bgGradient: "from-blue-50 to-cyan-50",
-      skills: ["React", "Next.js", "TypeScript", "Tailwind"],
-      students: "2.5k",
-      courses: "12"
-    },
+    // {
+    //   icon: <Code className="w-10 h-10" />,
+    //   title: "Full Stack Development",
+    //   description: "Build modern, responsive websites",
+    //   gradient: "from-blue-500 via-blue-600 to-cyan-500",
+    //   bgGradient: "from-blue-50 to-cyan-50",
+    //   skills: ["React", "Next.js", "TypeScript", "Tailwind"],
+    // },
     {
       icon: <Smartphone className="w-10 h-10" />,
       title: "Mobile Development",
@@ -25,8 +23,6 @@ const Domain = () => {
       gradient: "from-purple-500 via-purple-600 to-pink-500",
       bgGradient: "from-purple-50 to-pink-50",
       skills: ["React Native", "Flutter", "Swift", "Kotlin"],
-      students: "1.8k",
-      courses: "10"
     },
     {
       icon: <Brain className="w-10 h-10" />,
@@ -35,8 +31,6 @@ const Domain = () => {
       gradient: "from-green-500 via-green-600 to-emerald-500",
       bgGradient: "from-green-50 to-emerald-50",
       skills: ["Python", "TensorFlow", "PyTorch", "Keras"],
-      students: "3.2k",
-      courses: "15"
     },
     {
       icon: <Palette className="w-10 h-10" />,
@@ -45,8 +39,7 @@ const Domain = () => {
       gradient: "from-pink-500 via-pink-600 to-rose-500",
       bgGradient: "from-pink-50 to-rose-50",
       skills: ["Figma", "Adobe XD", "Sketch", "Principle"],
-      students: "2.1k",
-      courses: "8"
+    
     },
     {
       icon: <Database className="w-10 h-10" />,
@@ -55,38 +48,43 @@ const Domain = () => {
       gradient: "from-orange-500 via-orange-600 to-amber-500",
       bgGradient: "from-orange-50 to-amber-50",
       skills: ["Node.js", "Python", "PostgreSQL", "MongoDB"],
-      students: "2.9k",
-      courses: "14"
+  
     },
-    {
-      icon: <Cloud className="w-10 h-10" />,
-      title: "Cloud & DevOps",
-      description: "Master cloud infrastructure",
-      gradient: "from-indigo-500 via-indigo-600 to-blue-500",
-      bgGradient: "from-indigo-50 to-blue-50",
-      skills: ["AWS", "Docker", "Kubernetes", "Terraform"],
-      students: "1.6k",
-      courses: "11"
-    },
+    // {
+    //   icon: <Cloud className="w-10 h-10" />,
+    //   title: "Cloud & DevOps",
+    //   description: "Master cloud infrastructure",
+    //   gradient: "from-indigo-500 via-indigo-600 to-blue-500",
+    //   bgGradient: "from-indigo-50 to-blue-50",
+    //   skills: ["AWS", "Docker", "Kubernetes", "Terraform"],
+    //   students: "1.6k",
+    //   courses: "11"
+    // },
     {
       icon: <Globe className="w-10 h-10" />,
-      title: "Full Stack",
+      title: "Full Stack Development",
       description: "Complete web development mastery",
       gradient: "from-teal-500 via-teal-600 to-cyan-500",
       bgGradient: "from-teal-50 to-cyan-50",
       skills: ["MERN", "Next.js", "GraphQL", "Docker"],
-      students: "4.1k",
-      courses: "18"
     },
+    // {
+    //   icon: <Cpu className="w-10 h-10" />,
+    //   title: "Data Science",
+    //   description: "Analyze and visualize complex data",
+    //   gradient: "from-violet-500 via-violet-600 to-purple-500",
+    //   bgGradient: "from-violet-50 to-purple-50",
+    //   skills: ["Python", "Pandas", "Tableau", "R"],
+    //   students: "2.3k",
+    //   courses: "13"
+    // }
     {
-      icon: <Cpu className="w-10 h-10" />,
-      title: "Data Science",
-      description: "Analyze and visualize complex data",
-      gradient: "from-violet-500 via-violet-600 to-purple-500",
-      bgGradient: "from-violet-50 to-purple-50",
-      skills: ["Python", "Pandas", "Tableau", "R"],
-      students: "2.3k",
-      courses: "13"
+      icon: <Code className="w-10 h-10" />,
+      title: "Frontend Development",
+      description: "Craft stunning user interfaces",
+      gradient: "from-yellow-500 via-yellow-600 to-orange-500",
+      bgGradient: "from-yellow-50 to-orange-50",
+      skills: ["HTML", "CSS", "JavaScript", "React"],
     }
   ]
 

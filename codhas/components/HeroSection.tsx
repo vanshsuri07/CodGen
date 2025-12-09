@@ -16,14 +16,14 @@ const HeroSection = () => {
       </video>
 
       {/* Overlay */}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-white/90 via-white/70 to-transparent"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-white/90 via-white/70 to-transparent"></div>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] flex items-center py-12 sm:py-0">
         <div className="max-w-2xl w-full">
           
           <TextReveal 
-            text="Project-Based Virtual Internships" 
+            text="Launch Your Tech Career..." 
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight"
           />
 
@@ -35,7 +35,10 @@ const HeroSection = () => {
 
           <SlideUp delay={0.7}>
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <button className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 text-sm sm:text-base">
+              <button 
+                onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSe7h3_3sa8Hu-UjZHw9CspY2lowhOfkMOWp0wfcn2q8LsmdrA/viewform', '_blank')}
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 text-sm sm:text-base"
+              >
                 Apply Now
               </button>
 

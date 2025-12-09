@@ -92,7 +92,9 @@ const Service = () => {
                   ))}
                 </ul>
 
-                <button className="mt-auto text-blue-600 font-semibold hover:text-blue-700 transition-colors flex items-center group">
+                
+               <button onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSe7h3_3sa8Hu-UjZHw9CspY2lowhOfkMOWp0wfcn2q8LsmdrA/viewform', '_blank')}
+                className="mt-auto text-blue-600 font-semibold hover:text-blue-700 hover:underline transition-all duration-300 flex items-center group">
                   Apply now
                   <svg
                     className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
