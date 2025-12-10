@@ -95,7 +95,7 @@ const ContactAndFooter = () => {
     setIsSubmitting(true);
 
     const form = new FormData();
-    form.append("access_key", "805b81cc-02d3-4a90-99a2-4dd9f48f4dc3");
+    form.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "");
     form.append("name", formData.name);
     form.append("email", formData.email);
     form.append("phone", formData.phone);
