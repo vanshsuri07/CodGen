@@ -257,7 +257,7 @@ const ContactAndFooter = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
-                      <p className="text-gray-600">info@codgen.com</p>
+                      <p className="text-gray-600">info@codgen.in</p>
                     </div>
                   </div>
 
@@ -268,8 +268,8 @@ const ContactAndFooter = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">Phone</h4>
-                      <p className="text-gray-600">+1 (555) 123-4567</p>
-                      <p className="text-gray-600">Mon-Fri, 9AM-6PM EST</p>
+                      <p className="text-gray-600">+91 (555) 123-4567</p>
+                      <p className="text-gray-600">Mon-Fri, 9AM-6PM IST</p>
                     </div>
                   </div>
 
@@ -287,13 +287,20 @@ const ContactAndFooter = () => {
                 </div>
 
                 {/* Social Links */}
-                {/* <div className="bg-white rounded-2xl p-6 shadow-lg">
+                <div className="bg-white rounded-2xl p-6 shadow-lg">
                   <h4 className="font-semibold text-gray-900 mb-4">Follow Us</h4>
                   <div className="flex space-x-4">
-                    {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
+                    {[
+                      // { Icon: Mail, href: "#" },
+                      { Icon: Twitter, href: "#" },
+                      { Icon: Linkedin, href: "https://www.linkedin.com/company/codgen-it/" },
+                      // { Icon: Instagram, href: "#" }
+                    ].map(({ Icon, href }, i) => (
                       <motion.a
                         key={i}
-                        href="#"
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         whileHover={{ scale: 1.1, rotate: 5 }}
                         whileTap={{ scale: 0.9 }}
                         className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
@@ -302,7 +309,7 @@ const ContactAndFooter = () => {
                       </motion.a>
                     ))}
                   </div>
-                </div> */}
+                </div>
               </SlideUp>
             </div>
           </div>
@@ -319,18 +326,25 @@ const ContactAndFooter = () => {
               <p className="text-gray-400 mb-4">
                 Empowering the next generation of developers through hands-on learning and real-world projects.
               </p>
-              {/* <div className="flex space-x-3">
-                {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
+              <div className="flex space-x-3">
+                {[
+                  // { Icon: Facebook, href: "#" },
+                  { Icon: Twitter, href: "#" },
+                  { Icon: Linkedin, href: "https://www.linkedin.com/company/codgen-it/" },
+                  // { Icon: Instagram, href: "#" }
+                ].map(({ Icon, href }, i) => (
                   <motion.a
                     key={i}
-                    href="#"
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ scale: 1.1, y: -2 }}
                     className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors"
                   >
                     <Icon className="w-4 h-4" />
                   </motion.a>
                 ))}
-              </div> */}
+              </div>
             </div>
 
             {/* Quick Links */}
