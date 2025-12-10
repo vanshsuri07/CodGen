@@ -48,7 +48,7 @@ export const metadata = {
     siteName: "CodGen",
     images: [
       {
-        url: "/orginal.png", // add when available
+        url: "/og-banner.png", // add when available
         width: 1200,
         height: 630,
         alt: "CodGen Internship"
