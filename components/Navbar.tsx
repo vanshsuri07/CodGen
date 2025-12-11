@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Poppins } from "next/font/google";
+import { usePathname, useRouter } from "next/navigation";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -13,27 +14,42 @@ const poppins = Poppins({
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+  const pathname = usePathname();
+  const router = useRouter();
 
-  
+  // Determine active section based on pathname
+  const getActiveSection = () => {
+    if (pathname === "/blog" || pathname?.startsWith("/blog/")) return "blogs";
+    return "home";
+  };
+
+  const [activeSection, setActiveSection] = useState(getActiveSection());
+
+  // Update active section when pathname changes
+  useEffect(() => {
+    setActiveSection(getActiveSection());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
 
-      // Get all sections
-      const sections = ["home", "services", "about", "contact"];
-      const scrollPosition = window.scrollY + 100;
+      // Only track sections on home page
+      if (pathname === "/") {
+        const sections = ["home", "services", "about", "contact"];
+        const scrollPosition = window.scrollY + 100;
 
-      // Find which section is currently in view
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetBottom = offsetTop + element.offsetHeight;
+        for (const section of sections) {
+          const element = document.getElementById(section);
+          if (element) {
+            const offsetTop = element.offsetTop;
+            const offsetBottom = offsetTop + element.offsetHeight;
 
-          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-            setActiveSection(section);
-            break;
+            if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+              setActiveSection(section);
+              break;
+            }
           }
         }
       }
@@ -41,19 +57,33 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
 
   const navLinks = [
-    { name: "Home", href: "#home", id: "home" },
-    { name: "Services", href: "#services", id: "services" },
-    { name: "About Us", href: "#about", id: "about" },
-    { name: "Contact", href: "#contact", id: "contact" },
+    { name: "Home", href: "/", id: "home", isExternal: true },
+    { name: "Services", href: "/#services", id: "services", isExternal: false },
+    { name: "Blogs", href: "/blog", id: "blogs", isExternal: true },
+    { name: "About Us", href: "/#about", id: "about", isExternal: false },
+    { name: "Contact", href: "/#contact", id: "contact", isExternal: false },
   ];
 
-  const scrollToSection = (href: string, id: string) => {
+  const handleNavigation = (link: typeof navLinks[0]) => {
+    if (link.isExternal) {
+      // Navigate to a different page
+      router.push(link.href);
+    } else if (pathname !== "/") {
+      // If not on home page, navigate to home then scroll
+      router.push(link.href);
+    } else {
+      // Scroll to section on current page
+      scrollToSection(link.id);
+    }
+  };
+
+  const scrollToSection = (id: string) => {
     setIsOpen(false);
     
-    // Small delay to allow menu to close before scrolling
+    
     setTimeout(() => {
       const element = document.getElementById(id);
       if (element) {
@@ -72,12 +102,12 @@ const Navbar = () => {
   return (
     <header className={`fixed w-full top-0 z-50 transition-all duration-300
   ${scrolled ? "bg-white/95 shadow-sm backdrop-blur-lg py-2 border-b border-gray-200/60"
-             : "bg-transparent py-4"}
+             : "bg-white/95 py-4 border-b border-gray-200/40"}
 `}>
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* --- Logo Section --- */}
         <button
-          onClick={() => scrollToSection("#home", "home")}
+          onClick={() => router.push("/")}
           className="flex items-center gap-3 group cursor-pointer"
         >
           <motion.img
@@ -99,7 +129,7 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <li key={link.name}>
                 <button
-                  onClick={() => scrollToSection(link.href, link.id)}
+                  onClick={() => handleNavigation(link)}
                   className={`relative px-5 py-2.5 rounded-full font-bold text-100 transition-all duration-300 ${
                     activeSection === link.id
                       ? "text-blue-600"
@@ -174,10 +204,10 @@ const Navbar = () => {
                   transition={{ delay: index * 0.05 }}
                 >
                   <button
-                    onClick={() => scrollToSection(link.href, link.id)}
+                    onClick={() => handleNavigation(link)}
                     className={`w-full text-left px-5 py-3.5 rounded-xl font-medium transition-all duration-200 ${
                       activeSection === link.id
-                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20"
+                        ? "bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20"
                         : "text-gray-700 hover:bg-gray-50 active:scale-[0.98] border border-transparent hover:border-gray-200"
                     }`}
                   >

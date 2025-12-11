@@ -25,11 +25,6 @@ const page = () => {
       <div id="about" className="scroll-mt-20">
         <About />
       </div>
-      
-      {/* Contact Section */}
-      <div id="contact" className="scroll-mt-20">
-        <Contact />
-      </div>
     </main>
   )
 }

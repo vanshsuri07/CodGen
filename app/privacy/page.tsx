@@ -33,10 +33,10 @@ const Item = ({ title, children }: { title: string; children: React.ReactNode })
 export default function PrivacyPolicy() {
   return (
     <>
-      <div className="py-20 min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <div className=" min-h-screen bg-gradient-to-b from-white to-gray-50">
 
         {/* HERO */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-30 text-center">
           <Shield className="w-14 h-14 mx-auto mb-4 opacity-90" />
           <h1 className="text-5xl font-bold">Privacy Policy</h1>
           <p className="text-blue-200 mt-2">Last Updated: Jan 2025</p>
