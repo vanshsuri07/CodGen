@@ -102,7 +102,7 @@ const Navbar = () => {
   return (
     <header className={`fixed w-full top-0 z-50 transition-all duration-300
   ${scrolled ? "bg-white/95 shadow-sm backdrop-blur-lg py-2 border-b border-gray-200/60"
-             : "bg-white/95 py-4 border-b border-gray-200/40"}
+             : "bg-white/95 py-2 border-b border-gray-200/40"}
 `}>
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* --- Logo Section --- */}
@@ -118,7 +118,7 @@ const Navbar = () => {
             className="w-18 h-18 object-contain transition-all"
           />
 
-          <span className="text-3xl font-normal text-[#172554] tracking-wide group-hover:scale-[1.02] transition-transform" style={{ fontFamily: "'Swirly Canalope', cursive" }}>
+          <span className="text-3xl font-semibold text-[#172554] tracking-wide group-hover:scale-[1.02] transition-transform" style={{ fontFamily: "montserrat, sans-serif" }}>
             CodGen
           </span>
         </button>

@@ -1,7 +1,10 @@
 "use client";
-import { motion } from "framer-motion";
+
+import { motion, useScroll, useSpring } from "framer-motion";
+import { Calendar, ArrowLeft, BookOpen, Share2, ChevronRight } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { Calendar, Clock, Tag, ArrowLeft } from "lucide-react";
+import Image from "next/image";
 
 interface Blog {
   id: string;
@@ -10,23 +13,94 @@ interface Blog {
   date: string;
   content: string;
   category: string;
-  readTime: string;
   featured: boolean;
 }
 
 export default function BlogClient({ blog }: { blog?: Blog }) {
+  const [activeSection, setActiveSection] = useState("");
+
+  // Scroll Progress Bar Logic
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  // Derive content data from blog prop using useMemo
+  const contentData = useMemo(() => {
+    if (!blog) return { 
+      readingTime: 0, 
+      headings: [] as { id: string; text: string; level: number }[]
+    };
+
+    // 1. Calculate Reading Time
+    const words = blog.content.trim().split(/\s+/).length;
+    const readingTime = Math.ceil(words / 200);
+
+    // 2. Extract Headings
+    const lines = blog.content.split("\n");
+    const extractedHeadings = lines
+      .filter((line) => line.startsWith("##"))
+      .map((line, index) => ({
+        id: `section-${index}`,
+        text: line.replace(/^#+\s/, ""),
+        level: line.match(/^#+/)?.[0].length || 2,
+      }));
+    
+    return { readingTime, headings: extractedHeadings };
+  }, [blog]);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const y = element.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top: y, behavior: "smooth" });
+      setActiveSection(id);
+    }
+  };
+
+  useEffect(() => {
+    if (!contentData.headings.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
+
+        if (visible[0]?.target.id) {
+          setActiveSection(visible[0].target.id);
+        }
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+
+    contentData.headings.forEach((heading) => {
+      const el = document.getElementById(heading.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [contentData.headings]);
+
   if (!blog) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center py-10">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog Not Found</h1>
-          <p className="text-gray-600 mb-6">The blog post you&apos;re looking for doesn&apos;t exist.</p>
-          <Link 
-            href="/blog" 
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+      <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
+        <div className="text-center max-w-md mx-auto">
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <BookOpen className="w-8 h-8 text-blue-600" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">Blog Not Found</h1>
+          <p className="text-gray-600 mb-8">
+            The article you are looking for might have been removed or is temporarily unavailable.
+          </p>
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Blogs
+            Back to Library
           </Link>
         </div>
       </div>
@@ -34,125 +108,209 @@ export default function BlogClient({ blog }: { blog?: Blog }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-20 px-6">
-      <div className="max-w-4xl mx-auto">
-        {/* Back Button */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-2 py-10"
-        >
-          <Link 
-            href="/blog" 
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Back to Blogs
-          </Link>
-        </motion.div>
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50 text-gray-900 font-sans selection:bg-blue-200 selection:text-blue-900">
+      
+      {/* Reading Progress Bar (Fixed Top) */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-blue-600 origin-left z-50 shadow-[0_0_15px_rgba(37,99,235,0.5)]"
+        style={{ scaleX }}
+      />
 
-        {/* Main Content Card */}
-        <motion.article
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 md:p-12 shadow-2xl border border-gray-200"
-        >
-          {/* Category Badge */}
-          <div className="flex items-center gap-3 mb-6">
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
-              <Tag className="w-4 h-4" />
-              {blog.category}
-            </span>
-            {blog.featured && (
-              <span className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full text-xs font-bold">
-                ⭐ Featured
-              </span>
-            )}
-          </div>
-
-          {/* Title */}
-          <motion.h1 
-            initial={{ opacity: 0, y: -10 }} 
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight"
-          >
-            {blog.title}
-          </motion.h1>
-
-          {/* Description */}
-          <p className="text-xl text-gray-600 mb-6 leading-relaxed">
-            {blog.description}
-          </p>
-
-          {/* Meta Information */}
-          <div className="flex flex-wrap items-center gap-6 pb-8 mb-8 border-b border-gray-200">
-            <div className="flex items-center gap-2 text-gray-500">
-              <Calendar className="w-5 h-5" />
-              <span className="font-medium">{blog.date}</span>
-            </div>
-            <div className="flex items-center gap-2 text-gray-500">
-              <Clock className="w-5 h-5" />
-              <span className="font-medium">{blog.readTime}</span>
-            </div>
-          </div>
-
-          {/* Blog Content */}
-          <div className="prose prose-lg max-w-none text-gray-800">
-            {blog.content.split("\n").map((line: string, i: number) => {
-              // Handle empty lines
-              if (line.trim() === "") {
-                return <br key={i} />;
-              }
-              
-              // Handle headings
-              if (line.startsWith("## ")) {
-                return (
-                  <h2 key={i} className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-                    {line.replace("## ", "")}
-                  </h2>
-                );
-              }
-              
-              if (line.startsWith("### ")) {
-                return (
-                  <h3 key={i} className="text-xl font-bold text-gray-900 mt-6 mb-3">
-                    {line.replace("### ", "")}
-                  </h3>
-                );
-              }
-
-              // Handle bullet points
-              if (line.trim().startsWith("•") || line.trim().startsWith("-")) {
-                return (
-                  <li key={i} className="ml-6 mb-2">
-                    {line.replace(/^[•\-]\s*/, "")}
-                  </li>
-                );
-              }
-
-              // Regular paragraphs
-              return (
-                <p key={i} className="mb-4 leading-relaxed">
-                  {line}
-                </p>
-              );
-            })}
-          </div>
-
-          {/* Bottom Navigation */}
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <Link 
-              href="/blog" 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold shadow-lg hover:shadow-xl"
+      {/* Top Navigation Bar */}
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <Link
+              href="/blog"
+              className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
-              Back to All Blogs
+              <ArrowLeft className="w-4 h-4" />
+              <span>All Posts</span>
             </Link>
+              <div className="hidden sm:flex items-center gap-4">
+               <span className="text-sm text-gray-500">{contentData.readingTime} min read</span>
+               <button className="p-2 text-gray-600 hover:text-blue-600 transition-colors rounded-full hover:bg-blue-50">
+                  <Share2 className="w-4 h-4" />
+               </button>
+            </div>
+        </div>
+      </header>
+
+      <main className="pb-24">
+        {/* Editorial Hero Section */}
+        <section className="relative pt-12 pb-16 px-4 sm:px-6 max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider border border-blue-200">
+                {blog.category}
+              </span>
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 mb-6 leading-[1.15]">
+              {blog.title}
+            </h1>
+
+            <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto font-light">
+              {blog.description}
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 border-t border-gray-200 pt-8 mt-8">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                <span>{blog.date}</span>
+              </div>
+              <div className="hidden sm:block w-1 h-1 bg-gray-300 rounded-full" />
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4" />
+                <span>{contentData.readingTime} min read</span>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Featured Image Placeholder */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-16">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="aspect-21/9 bg-linear-to-tr from-blue-100 to-indigo-100 rounded-3xl overflow-hidden shadow-2xl shadow-blue-200/50 border border-blue-200 relative"
+          >
+            <Image
+              src="/mern-blog.png"
+              alt="Featured Image"
+              fill
+              className=" object-center"
+              priority
+            />  
+          </motion.div>
+        </div>
+
+        {/* Content Layout */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            {/* Sidebar: Table of Contents */}
+            <aside className="hidden lg:block lg:col-span-3">
+              <div className="sticky top-24 space-y-8">
+                {contentData.headings.length > 0 && (
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">
+                      On this page
+                    </h3>
+                    <nav className="relative border-l border-gray-200">
+                      {contentData.headings.map((heading) => (
+                        <button
+                          key={heading.id}
+                          onClick={() => scrollToSection(heading.id)}
+                          className={`block w-full text-left pl-4 py-2 text-sm transition-all duration-200 border-l-2 -ml-0.5 ${
+                            activeSection === heading.id
+                              ? "border-blue-600 text-blue-700 font-medium"
+                              : "border-transparent text-gray-700 hover:text-black hover:border-gray-300"
+                          } ${heading.level === 3 ? "ml-4" : ""}`}
+                        >
+                          {heading.text}
+                        </button>
+                      ))}
+                    </nav>
+                  </motion.div>
+                )}
+                
+                
+              </div>
+            </aside>
+
+            {/* Main Article Content */}
+            <article className="lg:col-span-8 lg:col-start-4">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="prose prose-lg max-w-none 
+                  prose-headings:font-bold prose-headings:text-gray-900 
+                  prose-p:text-gray-700 prose-p:leading-8 prose-p:mb-8
+                  prose-li:text-gray-700 prose-li:marker:text-blue-600
+                  prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+                  prose-strong:font-semibold prose-strong:text-gray-900"
+              >
+                {blog.content.split("\n").map((line: string, i: number) => {
+                  const headingIndex = contentData.headings.findIndex((h) => line.includes(h.text));
+                  const sectionId = headingIndex !== -1 ? contentData.headings[headingIndex].id : undefined;
+
+                  if (line.trim() === "") return <div key={i} className="h-0" />;
+
+                  // H2 Styling
+                  if (line.startsWith("## ")) {
+                    return (
+                      <div key={i} className="group relative">
+                        <h2
+                          id={sectionId}
+                          className="text-3xl font-bold mt-16 mb-6 text-gray-900 tracking-tight scroll-mt-24"
+                        >
+                          {line.replace("## ", "")}
+                        </h2>
+                      </div>
+                    );
+                  }
+
+                  // H3 Styling
+                  if (line.startsWith("### ")) {
+                    return (
+                      <h3
+                        key={i}
+                        id={sectionId}
+                        className="text-xl font-bold mt-10 mb-4 text-gray-800 scroll-mt-24 flex items-center gap-2"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-600 inline-block" />
+                        {line.replace("### ", "")}
+                      </h3>
+                    );
+                  }
+
+                  // List Items
+                  if (line.trim().startsWith("•") || line.trim().startsWith("-")) {
+                    return (
+                      <div key={i} className="flex items-start gap-3 mb-4 pl-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-2.5 shrink-0" />
+                        <p className="text-gray-700 leading-relaxed m-0">
+                          {line.replace(/^[•\-]\s*/, "")}
+                        </p>
+                      </div>
+                    );
+                  }
+
+                  // Standard Paragraphs
+                  return (
+                    <p key={i} className="text-lg leading-8 text-gray-700 font-normal mb-6">
+                      {line}
+                    </p>
+                  );
+                })}
+              </motion.div>
+
+              {/* Post Footer */}
+              <div className="mt-16 pt-8 border-t border-gray-200">
+                 <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+                    <div>
+                        
+                        <Link href="/blog" className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors flex items-center gap-2">
+                           Back to Blog Library <ChevronRight className="w-4 h-4" />
+                        </Link>
+                    </div>
+                    
+                 </div>
+              </div>
+            </article>
           </div>
-        </motion.article>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

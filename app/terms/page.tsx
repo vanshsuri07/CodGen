@@ -64,7 +64,7 @@ export default function TermsAndConditions() {
        
       </div>
 
-      <ContactAndFooter/>
+      
     </>
   );
 }

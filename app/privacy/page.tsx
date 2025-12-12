@@ -86,17 +86,12 @@ export default function PrivacyPolicy() {
             </Item>
           </Section>
 
-          {/* CONTACT */}
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded">
-            Contact support:<br/>
-            📩 Email: support@codgen.in<br/>
-            📱 WhatsApp: +91 XXXXXXXXXX
-          </div>
+          
 
         </div>
       </div>
 
-      <ContactAndFooter/>
+   
     </>
   );
 }

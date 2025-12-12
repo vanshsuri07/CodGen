@@ -88,16 +88,11 @@ export default function RefundPolicy() {
             Note: This policy prevents misuse and maintains internship credibility.
           </p>
         </div>
-{/* 
-        <div className="bg-gray-100 p-6 rounded border">
-          <p className="font-semibold text-gray-800 mb-2">For refund-related queries:</p>
-          📩 Email: support@codgen.in<br/>
-          📱 WhatsApp: +91 XXXXXXXXXX
-        </div> */}
+
 
       </div>
 
-      <ContactAndFooter/>
+    
     </>
   );
 }
