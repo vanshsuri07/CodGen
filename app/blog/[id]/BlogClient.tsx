@@ -5,6 +5,8 @@ import { Calendar, ArrowLeft, BookOpen, Share2, ChevronRight } from "lucide-reac
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { blogs } from "../blogdata";
+import MarkdownRenderer from "@/components/MarkDownRenderer";
 
 interface Blog {
   id: string;
@@ -13,7 +15,54 @@ interface Blog {
   date: string;
   content: string;
   category: string;
+  keywords?: string[];
+  coverImage?: string;
   featured: boolean;
+}
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const blog = blogs.find((b) => b.id === id);
+ if (!blog) {
+    return {
+      title: "Blog Not Found | CodGen",
+      description: "The blog you're looking for does not exist.",
+    };
+  }
+
+  const url = `https://codgen.in/blog/${blog.id}`;
+  const ogImage = blog.coverImage
+    ? `https://codgen.in${blog.coverImage}`
+    : "https://codgen.in/blog-hero.png";
+
+  return {
+    title: `${blog.title} | CodGen Blog`,
+    description: blog.description,
+    keywords: blog.keywords || [],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: `${blog.title} | CodGen Blog`,
+      description: blog.description,
+      url,
+      siteName: "CodGen",
+      type: "article",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: blog.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.description,
+      images: [ogImage],
+    },
+  };
 }
 
 export default function BlogClient({ blog }: { blog?: Blog }) {
@@ -63,26 +112,41 @@ export default function BlogClient({ blog }: { blog?: Blog }) {
   useEffect(() => {
     if (!contentData.headings.length) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
+    // Wait for markdown to render
+    const timeoutId = setTimeout(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
 
-        if (visible[0]?.target.id) {
-          setActiveSection(visible[0].target.id);
+          if (visible[0]?.target.id) {
+            setActiveSection(visible[0].target.id);
+          }
+        },
+        { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.5, 1] }
+      );
+
+      contentData.headings.forEach((heading) => {
+        const el = document.getElementById(heading.id);
+        if (el) {
+          observer.observe(el);
         }
-      },
-      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
-    );
+      });
 
-    contentData.headings.forEach((heading) => {
-      const el = document.getElementById(heading.id);
-      if (el) observer.observe(el);
-    });
+      // Set initial active section
+      if (contentData.headings[0]) {
+        setActiveSection(contentData.headings[0].id);
+      }
 
-    return () => observer.disconnect();
-  }, [contentData.headings]);
+      return () => {
+        clearTimeout(timeoutId);
+        observer.disconnect();
+      };
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [contentData.headings, blog?.content]);
 
   if (!blog) {
     return (
@@ -180,7 +244,7 @@ export default function BlogClient({ blog }: { blog?: Blog }) {
             className="aspect-21/9 bg-linear-to-tr from-blue-100 to-indigo-100 rounded-3xl overflow-hidden shadow-2xl shadow-blue-200/50 border border-blue-200 relative"
           >
             <Image
-              src="/mern-blog.png"
+              src={blog.coverImage || "/blog-hero.png"}
               alt="Featured Image"
               fill
               className=" object-center"
@@ -229,71 +293,20 @@ export default function BlogClient({ blog }: { blog?: Blog }) {
 
             {/* Main Article Content */}
             <article className="lg:col-span-8 lg:col-start-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="prose prose-lg max-w-none 
-                  prose-headings:font-bold prose-headings:text-gray-900 
-                  prose-p:text-gray-700 prose-p:leading-8 prose-p:mb-8
-                  prose-li:text-gray-700 prose-li:marker:text-blue-600
-                  prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-                  prose-strong:font-semibold prose-strong:text-gray-900"
-              >
-                {blog.content.split("\n").map((line: string, i: number) => {
-                  const headingIndex = contentData.headings.findIndex((h) => line.includes(h.text));
-                  const sectionId = headingIndex !== -1 ? contentData.headings[headingIndex].id : undefined;
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.3 }}
+    className="prose prose-lg max-w-none 
+      prose-headings:font-bold prose-headings:text-gray-900 
+      prose-p:text-gray-700 prose-p:leading-8 prose-p:mb-8
+      prose-li:text-gray-700 prose-li:marker:text-blue-600
+      prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+      prose-strong:font-semibold prose-strong:text-gray-900"
+  >
+    <MarkdownRenderer content={blog.content} headings={contentData.headings} />
+  </motion.div>
 
-                  if (line.trim() === "") return <div key={i} className="h-0" />;
-
-                  // H2 Styling
-                  if (line.startsWith("## ")) {
-                    return (
-                      <div key={i} className="group relative">
-                        <h2
-                          id={sectionId}
-                          className="text-3xl font-bold mt-16 mb-6 text-gray-900 tracking-tight scroll-mt-24"
-                        >
-                          {line.replace("## ", "")}
-                        </h2>
-                      </div>
-                    );
-                  }
-
-                  // H3 Styling
-                  if (line.startsWith("### ")) {
-                    return (
-                      <h3
-                        key={i}
-                        
-                        className="text-xl font-bold mt-10 mb-4 text-gray-800 scroll-mt-24 flex items-center gap-2"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-600 inline-block" />
-                        {line.replace("### ", "")}
-                      </h3>
-                    );
-                  }
-
-                  // List Items
-                  if (line.trim().startsWith("•") || line.trim().startsWith("-")) {
-                    return (
-                      <div key={i} className="flex items-start gap-3 pl-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-2.5 shrink-0" />
-                        <p className="text-gray-700 leading-relaxed m-0">
-                          {line.replace(/^[•\-]\s*/, "")}
-                        </p>
-                      </div>
-                    );
-                  }
-
-                  // Standard Paragraphs
-                  return (
-                    <p key={i} className="text-lg leading-8 text-gray-700 font-normal mb-4">
-                      {line}
-                    </p>
-                  );
-                })}
-              </motion.div>
 
               {/* Post Footer */}
               <div className="mt-16 pt-8 border-t border-gray-200">

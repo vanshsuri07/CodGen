@@ -7,6 +7,45 @@ import Link from "next/link";
 
 import { Calendar, ArrowRight, BookOpen, Sparkles } from "lucide-react";
 
+function StandardBlogCard({ blog, index }: { blog: Blog; index: number }) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 + index * 0.1 }}
+      className="group bg-white rounded-2xl shadow-lg overflow-hidden border hover:-translate-y-2 transition"
+    >
+      <div className="p-8">
+        <div className="flex items-center gap-4 mb-3">
+          <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+            {blog.category}
+          </span>
+        </div>
+
+        <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition">
+          {blog.title}
+        </h3>
+
+        <p className="text-gray-600 my-3">{blog.description}</p>
+
+        <div className="flex items-center justify-between mt-6 text-sm">
+          <div className="flex items-center gap-2 text-gray-500">
+            <Calendar className="w-4 h-4" />
+            {blog.date}
+          </div>
+
+          <Link
+            href={`/blog/${blog.id}`}
+            className="flex items-center gap-2 text-blue-600 hover:underline"
+          >
+            Read Full Article <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
 interface Blog {
   id: string;
   title: string;
@@ -22,6 +61,9 @@ export default function BlogClient({ blogs }: { blogs: Blog[] }) {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const featuredBlogs = blogs.filter((b) => b.featured);
+  const filteredBlogs = activeCategory === "All" 
+    ? blogs.filter((b) => !b.featured)
+    : blogs.filter((b) => b.category === activeCategory && !b.featured);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -149,6 +191,52 @@ export default function BlogClient({ blogs }: { blogs: Blog[] }) {
           </div>
         </div>
       </section>
+
+       <section id="latest-posts" className="py-16 px-6 bg-white/70">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.7 }}
+            className="mb-12"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              {activeCategory === "All"
+                ? "All Latest Posts"
+                : `Latest Posts in ${activeCategory}`}
+            </h2>
+            <p className="text-gray-600">
+              Browse our complete archive of technical articles and guides.
+            </p>
+            <div className="w-24 h-1 mt-3 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full"></div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredBlogs.length > 0 ? (
+              filteredBlogs.map((blog, index) => (
+                <StandardBlogCard key={blog.id} blog={blog} index={index} />
+              ))
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="col-span-full text-center py-10 border-2 border-dashed border-gray-300 rounded-xl bg-white"
+              >
+                <p className="text-xl font-medium text-gray-600">
+                  No posts found in the **{activeCategory}** category yet.
+                </p>
+                <button
+                  onClick={() => setActiveCategory("All")}
+                  className="mt-4 text-blue-600 font-semibold hover:text-blue-800 transition-colors"
+                >
+                  View All Posts
+                </button>
+              </motion.div>
+            )}
+          </div>
+        </div>
+      </section> 
     </div>
   );
 }
