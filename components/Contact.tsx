@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Send, CheckCircle, X, AlertCircle, Loader2 } from 'lucide-react'
+import { Mail, Phone, MapPin, Twitter, Linkedin,  Send, CheckCircle, X, AlertCircle, Loader2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // Toast Component
@@ -292,7 +292,7 @@ const ContactAndFooter = () => {
                   <div className="flex space-x-4">
                     {[
                       // { Icon: Mail, href: "#" },
-                      { Icon: Twitter, href: "#" },
+                      { Icon: Twitter, href: "https://x.com/CodGen007" },
                       { Icon: Linkedin, href: "https://www.linkedin.com/company/codgen-it/" },
                       // { Icon: Instagram, href: "#" }
                     ].map(({ Icon, href }, i) => (
@@ -329,7 +329,7 @@ const ContactAndFooter = () => {
               <div className="flex space-x-3">
                 {[
                   // { Icon: Facebook, href: "#" },
-                  { Icon: Twitter, href: "#" },
+                  { Icon: Twitter, href: "https://x.com/CodGen007" },
                   { Icon: Linkedin, href: "https://www.linkedin.com/company/codgen-it/" },
                   // { Icon: Instagram, href: "#" }
                 ].map(({ Icon, href }, i) => (
