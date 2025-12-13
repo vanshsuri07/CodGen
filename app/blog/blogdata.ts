@@ -1,7 +1,7 @@
 export const blogs = [
   {
     id: "what-is-mern-stack",
-    title: "What Is MERN Stack? A Complete Beginner-to-Career Guide (2025)",
+    title: "What Is MERN Stack? A Complete Beginner-to-Career Guide (2026)",
     description: "Learn MongoDB, Express.js, React, and Node.js in the simplest possible way. Perfect for beginners!",
     keywords: ["mern stack", "mongodb", "express", "react", "nodejs", "full stack development"],
    
@@ -10,21 +10,21 @@ export const blogs = [
 If you are a student, beginner, or aspiring full-stack developer, understanding the MERN stack is not optional anymore. It is a career-defining skill set.
 
 In this guide, you will learn:
-	•	What MERN Stack is (clearly, not vaguely)
-	•	How it actually works in real applications
-	•	When you should and should NOT use MERN
-	•	Career scope, salary insights, and a learning roadmap
-	•	Real-world project ideas
+•	What MERN Stack is (clearly, not vaguely)
+•	How it actually works in real applications
+•	When you should and should NOT use MERN
+•	Career scope, salary insights, and a learning roadmap
+•	Real-world project ideas
 
 No fluff. No copied definitions. Just what matters.
 
 ## What Does MERN Stand For?
 
 MERN stands for:
-	•	MongoDB – Database
-	•	Express.js – Backend framework
-	•	React.js – Frontend library
-	•	Node.js – Runtime environment
+•	MongoDB – Database
+•	Express.js – Backend framework
+•	React.js – Frontend library
+•	Node.js – Runtime environment
 
 Together, these technologies help you build complete web applications — from database to user interface — using JavaScript everywhere.
 
@@ -36,22 +36,22 @@ Most beginner articles fail here. Let’s fix that.
 
 Step-by-step flow in a real MERN app:
 	1.	User interacts with the UI (React)
-	•	Clicks a button
-	•	Submits a form
-	•	Requests data
-	2.	React sends a request to the backend
-	•	Uses Fetch or Axios
-	•	Calls a REST API endpoint
+•	Clicks a button
+•	Submits a form
+•	Requests data
+  2.	React sends a request to the backend
+•	Uses Fetch or Axios
+•	Calls a REST API endpoint
 	3.	Express + Node handle the request
-	•	Validate data
-	•	Apply business logic
-	•	Decide what database action is needed
+•	Validate data
+•	Apply business logic
+•	Decide what database action is needed
 	4.	MongoDB stores or retrieves data
-	•	Data is stored as JSON-like documents
-	•	Fast and scalable
+•	Data is stored as JSON-like documents
+•	Fast and scalable
 	5.	Response goes back to React
-	•	JSON data is returned
-	•	UI updates instantly
+•	JSON data is returned
+•	UI updates instantly
 
 This clean, predictable flow is why MERN is loved for single-page applications (SPAs).
 
@@ -62,28 +62,28 @@ MERN is not popular by accident.
 
 Key advantages:
 
-One Language Everywhere
+1. One Language Everywhere :-
 JavaScript on frontend, backend, and database logic → faster learning and development.
 
-High Performance
+2. High Performance :-
 Node.js uses non-blocking I/O → excellent for real-time apps.
 
-Component-Based UI
+3. Component-Based UI :-
 React encourages reusable components → cleaner and maintainable code.
 
-Massive Community Support
+4. Massive Community Support :-
 Problems are already solved. Documentation, tutorials, and libraries are everywhere.
 
-Perfect for Startups
+5. Perfect for Startups :-
 Fast development + scalability = ideal for MVPs and growing products.
 
 ## When You Should NOT Use MERN Stack
 
 Avoid MERN if:
-	•	Your application is CPU-intensive (e.g., heavy data science)
-	•	You need strict relational data with complex joins
-	•	Your team already specializes in Java / .NET / Python ecosystems
-	•	SEO is critical and the app is poorly optimized for SSR
+•	Your application is CPU-intensive (e.g., heavy data science)
+•	You need strict relational data with complex joins
+•	Your team already specializes in Java / .NET / Python ecosystems
+•	SEO is critical and the app is poorly optimized for SSR
 
 Knowing when not to use a technology is a sign of maturity.
 
@@ -106,15 +106,15 @@ MERN is preferred over MEAN today because React is generally faster and more pop
 If you’re learning MERN for career reasons, here’s the truth:
 
 Job roles:
-	•	Full-Stack Developer
-	•	Frontend Developer (React)
-	•	Backend Developer (Node.js)
-	•	Software Engineer
+•	Full-Stack Developer
+•	Frontend Developer (React)
+•	Backend Developer (Node.js)
+•	Software Engineer
 
 Salary insight (approximate):
-	•	Freshers: Competitive entry-level salaries
-	•	Mid-level: Strong growth with experience
-	•	Freelancers: High demand globally
+•	Freshers: Competitive entry-level salaries
+•	Mid-level: Strong growth with experience
+•	Freelancers: High demand globally
 
 MERN is not a “trend skill.”
 It is a long-term employable stack.
@@ -139,25 +139,25 @@ Skipping steps = confusion later.
 Projects are what separate learners from developers.
 
 Start with:
-	•	To-Do App (CRUD + state management)
-	•	Authentication System (login/signup)
-	•	Blog Platform (roles, database relations)
+•	To-Do App (CRUD + state management)
+•	Authentication System (login/signup)
+•	Blog Platform (roles, database relations)
 
 Advance to:
-	•	Real-time chat app
-	•	E-commerce store
-	•	Dashboard with analytics
+•	Real-time chat app
+•	E-commerce store
+•	Dashboard with analytics
 
 If you can explain your project clearly, you’re employable.    date: "2025-01-19".
 
 ## Common Beginner Mistakes with MERN Stack
 
 Learn from others’ failures:
-	•	Learning React before JavaScript fundamentals
-	•	Ignoring backend concepts
-	•	Copy-pasting tutorials without understanding
-	•	Avoiding deployment
-	•	Building projects without structure
+•	Learning React before JavaScript fundamentals
+•	Ignoring backend concepts
+•	Copy-pasting tutorials without understanding
+•	Avoiding deployment
+•	Building projects without structure
 
 Fix these early.
 
@@ -172,6 +172,7 @@ If your goal is to become a full-stack developer, MERN is one of the smartest pa
 
     category: "Development",
     featured: true,
+    date: "2025-12-20",
    
   },
 //   {

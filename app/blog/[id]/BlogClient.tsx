@@ -108,7 +108,7 @@ export default function BlogClient({ blog }: { blog?: Blog }) {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50 text-gray-900 font-sans selection:bg-blue-200 selection:text-blue-900">
+    <div className="min-h-screen bg-linear-to-br from-slate-100 via-blue-100 to-indigo-2000 text-gray-900 font-sans selection:bg-blue-200 selection:text-blue-900">
       
       {/* Reading Progress Bar (Fixed Top) */}
       <motion.div
@@ -265,7 +265,7 @@ export default function BlogClient({ blog }: { blog?: Blog }) {
                     return (
                       <h3
                         key={i}
-                        id={sectionId}
+                        
                         className="text-xl font-bold mt-10 mb-4 text-gray-800 scroll-mt-24 flex items-center gap-2"
                       >
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-600 inline-block" />
@@ -277,7 +277,7 @@ export default function BlogClient({ blog }: { blog?: Blog }) {
                   // List Items
                   if (line.trim().startsWith("•") || line.trim().startsWith("-")) {
                     return (
-                      <div key={i} className="flex items-start gap-3 mb-4 pl-2">
+                      <div key={i} className="flex items-start gap-3 pl-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-2.5 shrink-0" />
                         <p className="text-gray-700 leading-relaxed m-0">
                           {line.replace(/^[•\-]\s*/, "")}
@@ -288,7 +288,7 @@ export default function BlogClient({ blog }: { blog?: Blog }) {
 
                   // Standard Paragraphs
                   return (
-                    <p key={i} className="text-lg leading-8 text-gray-700 font-normal mb-6">
+                    <p key={i} className="text-lg leading-8 text-gray-700 font-normal mb-4">
                       {line}
                     </p>
                   );
