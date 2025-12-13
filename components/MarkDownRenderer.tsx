@@ -124,7 +124,7 @@ export default function MarkdownRenderer({
 
             if (isInline) {
               return (
-                <code className="-px-1 text-gray-200 rounded bg-gray-900">
+                <code className=" text-gray-200 rounded bg-gray-900">
                   {children}
                 </code>
               );
